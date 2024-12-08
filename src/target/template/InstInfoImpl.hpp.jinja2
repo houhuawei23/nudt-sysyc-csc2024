@@ -1,0 +1,140 @@
+// Automatically generated file, do not edit!
+
+#include "mir/MIR.hpp"
+#include "mir/instinfo.hpp"
+#include "autogen/{{target_name.lower()}}/InstInfoDecl.hpp"
+
+{{target_name}}_NAMESPACE_BEGIN
+
+{% for inst_name in inst_name_list %}
+{% if inst_name in inst_info_dict %}
+class {{target_name}}InstInfo{{inst_name}} final: public InstInfo {
+public:
+    {{target_name}}InstInfo{{inst_name}}() = default;
+
+    uint32_t operand_num() const override {
+        return {{inst_info_dict[inst_name].operands|length}};
+    }
+
+    OperandFlag operand_flag(uint32_t idx) const override {
+        switch (idx) {
+            {%- for idx, op in inst_info_dict[inst_name].operands.items() -%}
+                case {{idx}}:
+                    return OperandFlag{{op.flag}};
+            {%- endfor -%}
+            default:
+                return OperandFlagNone;
+                assert(false && "Invalid operand index");
+        }
+    }
+    
+    uint32_t inst_flag() const override {
+        return InstFlagNone 
+            {%- for flag in inst_info_dict[inst_name].flag -%}
+                | InstFlag{{flag}} 
+            {%- endfor -%};
+    }
+
+    std::string_view name() const override{
+        return "{{target_name}}.{{inst_name}}";
+    }
+
+    void print(std::ostream& out, MIRInst& inst, bool comment) const override{        
+        out 
+        {%- for part in inst_info_dict[inst_name].format -%}
+            <<
+            {%- if part is integer -%}
+            mir::{{target_name}}::OperandDumper{ inst.operand({{part}}) }
+            {%- else -%}
+                "{{part}}"
+            {%- endif -%}
+        {%- endfor %};
+
+        {%- if inst_info_dict[inst_name].comment|length != 0 -%}
+            if (comment) {
+                out 
+                {%- for part in inst_info_dict[inst_name].comment -%}
+                    {%- if part is integer -%} 
+                        << inst_info_dict[inst_name].operand({{part}})
+                    {%- else -%}
+                        "{{part}}"
+                    {%- endif -%}
+                {%- endfor -%};
+            }
+        {%- endif -%}
+    }
+
+
+};
+{% endif %}
+{% endfor %}
+
+class {{target_name}}InstInfo final: public TargetInstInfo {
+    {%- for inst_name in inst_name_list -%}
+    {% if inst_name in inst_info_dict -%}
+    {{target_name}}InstInfo{{inst_name}} _instinfo{{inst_name}};
+    {% endif -%}
+    {%- endfor -%}
+public:
+    {{target_name}}InstInfo() = default;
+    const InstInfo& getInstInfo(uint32_t opcode) const override {
+        switch (opcode) {
+            {% for inst_name in inst_name_list -%}
+            case {{target_name}}Inst::{{inst_name}}:
+            {% if inst_name in inst_info_dict -%}
+                return _instinfo{{inst_name}};
+            {%- else -%}
+                break; /* not supported */
+            {%- endif %}
+            {%- endfor %}
+            default:
+                return TargetInstInfo::getInstInfo(opcode);
+        }
+    }
+    bool matchBranch(MIRInst* inst, MIRBlock*& target, double& prob) const override {
+        auto& instInfo = getInstInfo(inst->opcode());
+        if (requireFlag(instInfo.inst_flag(), InstFlagBranch)) {
+            if (inst->opcode() < ISASpecificBegin) {
+                return TargetInstInfo::matchBranch(inst, target, prob); 
+            }
+            switch (inst->opcode()) {
+                {% for branch in branch_list -%}
+                    case {{branch.name}}: target = dynamic_cast<MIRBlock*>(inst->operand({{branch.target}}).reloc());
+                        prob = {% if branch.prob != -1 %} inst->operand({{branch.prob}}).prob()
+                                {%- else -%} 1.0
+                                {%- endif -%};
+                        break;
+                {%- endfor %}
+                default:    
+                    std::cerr << "Error: unknown branch instruction: " << instInfo.name() << std::endl;
+
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    void redirectBranch(MIRInst* inst, MIRBlock* target) const override {
+        if(inst->opcode() < ISASpecificBegin) {
+            return TargetInstInfo::redirectBranch(inst, target);
+        }
+        assert(requireFlag(getInstInfo(inst->opcode()).inst_flag(), InstFlagBranch));
+
+        switch (inst->opcode()) {
+            {% for branch in branch_list -%}
+                case {{branch.name}}: inst->set_operand({{branch.target}}, MIROperand::asReloc(target)); break;
+            {%- endfor %}
+            default:    
+                std::cerr << "Error: unknown branch instruction: " << getInstInfo(inst->opcode()).name() << std::endl;
+                assert(false);
+        }        
+
+    
+    }
+};
+
+TargetInstInfo& get{{target_name}}InstInfo() {
+    static {{target_name}}InstInfo instance;
+    return instance;
+}
+{{target_name}}_NAMESPACE_END

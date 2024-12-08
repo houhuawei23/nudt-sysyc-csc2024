@@ -1,0 +1,453 @@
+Target:
+  name: GENERIC
+  infos: [InstInfo, InstSelInfo]
+InstInfo: {
+    InstList: [
+        Jump,
+        Branch,
+        Unreachable,
+        # memory
+        Load,
+        Store,
+        # arth
+        Add,
+        Sub,
+        Mul,
+        UDiv,
+        URem,
+        # bitwise
+        And,
+        Or,
+        Xor,
+        Shl, # logic shift left
+        LShr, # logic shift right
+        AShr, # arth shift right
+        # Signed div/rem
+        SDiv,
+        SRem,
+        # minmax
+        SMin,
+        SMax,
+        # unary
+        Neg,
+        Abs,
+        # fp
+        FAdd,
+        FSub,
+        FMul,
+        FDiv,
+        FNeg,
+        FAbs,
+        FFma,
+        # comp
+        ICmp,
+        FCmp,
+        # conversion
+        SExt,
+        ZExt,
+        Trunc,
+        F2U,
+        F2S,
+        U2F,
+        S2F,
+        FCast,
+
+        # misc
+        Copy,
+        Select,
+        LoadGlobalAddress,
+        LoadImm,
+        LoadStackObjectAddr, # 42
+        CopyFromReg,
+        CopyToReg,
+        LoadImmToReg,
+        LoadRegFromStack,
+        StoreRegToStack,
+        # hhw add
+        Return,
+        AtomicAdd,
+        AtomicSub,
+        # ISA specific
+        # ISASpecificBegin,
+      ],
+    Templates: {
+        # REG: is_reg()
+        # VAL: is_reg || is_imm
+        # INTREG: is_reg && is_int(type())
+        # INTVAL: is_int(type) && is_val()
+        # Template
+        # dst always be a register!
+        IntBinary: {
+            # format: "{mnem} {dst}, {src1}, {src2}",
+            format: [mnem, " ", 0, ", ", 1, ", ", 2],
+            operands:
+              {
+                0: { name: dst, type: INTREG, flag: Def },
+                1: { name: src1, type: INTVAL, flag: Use },
+                2: { name: src2, type: INTVAL, flag: Use },
+              },
+            instances:
+              [
+                { name: Add, flag: [Commutative] },
+                { name: Sub, flag: [] },
+                { name: Mul, flag: [Commutative] },
+                { name: UDiv, flag: [] },
+                { name: URem, flag: [] },
+                { name: And, flag: [Commutative] },
+                { name: Or, flag: [Commutative] },
+                { name: Xor, flag: [Commutative] },
+                { name: Shl, flag: [] },
+                { name: LShr, flag: [] },
+                { name: AShr, flag: [] },
+                { name: SMin, flag: [Commutative] },
+                { name: SMax, flag: [Commutative] },
+              ],
+          },
+
+        FloatBinary: {
+            # format: "{mnem} {dst}, {src1}, {src2}",
+            format: [mnem, " ", 0, ", ", 1, ", ", 2],
+            operands:
+              {
+                0: { name: dst, type: FPREG, flag: Def },
+                1: { name: src1, type: FPVAL, flag: Use },
+                2: { name: src2, type: FPVAL, flag: Use },
+              },
+            instances: [
+                # FAdd, FSub, FMul, FDiv
+                { name: FAdd, flag: [Commutative] },
+                { name: FSub, flag: [] },
+                { name: FMul, flag: [Commutative] },
+                { name: FDiv, flag: [] },
+              ],
+          },
+
+        IntUnary: {
+            # format: "{mnem} {dst}, {src}",
+            format: [mnem, " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: INTREG, flag: Def },
+                1: { name: src, type: INTVAL, flag: Use },
+              },
+            instances: [Neg, Abs],
+          },
+        FloatUnary:
+          {
+            format: [mnem, " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: FPREG, flag: Def },
+                1: { name: src, type: FPVAL, flag: Use },
+              },
+            instances: [FNeg, FAbs],
+          },
+      },
+
+    # instruction instances
+    Instances: {
+        # Instances
+        AtomicAdd: {
+          format: ["AtomicAdd", " ", 0, ", ", 1, ", ", 2],
+          operands: 
+          {
+          0: { name: dst, type: INTREG, flag: Def },
+          1: { name: addr, type: RELOC, flag: Use },
+          2: { name: src, type: INTVAL, flag: Use },
+          },
+          flag: [Atomic, Load, Store]
+        },
+        Jump: {
+            # format: "Jump {target}"
+            format: ["Jump", " ", 0],
+            operands: { 0: { name: target, type: RELOC, flag: Metadata } },
+            flag: [Terminator, Branch, NoFallThrough],
+          },
+        # Branch: {
+        #     # format: "Branch {cond}, {then}, {else}"
+        #     format: ["Branch", " ", 0, ", ", 1, ", ", 2],
+        #     operands:
+        #       {
+        #         0: { name: cond, type: BOOL, flag: Use },
+        #         1: { name: thenb, type: LABEL, flag: Metadata },
+        #         2: { name: elseb, type: LABEL, flag: Metadata },
+        #       },
+        #     flag: [Terminator, Branch],
+        #   },
+        Branch: {
+            # format: "Branch {cond}, {target}, {prob}"
+            format: ["Branch", " ", 0, ", ", 1, ", ", 2],
+            operands:
+              {
+                0: { name: cond, type: BOOL, flag: Use },
+                1: { name: target, type: RELOC, flag: Metadata },
+                2: { name: prob, type: PROB, flag: Metadata },
+              },
+            flag: [Terminator, Branch],
+          },
+        Unreachable:
+          {
+            format: ["Unreachable"],
+            operands: {},
+            flag: [Terminator, NoFallThrough],
+          },
+        Load: {
+            # format: "{mnem} {dst}, {src}, {align}"
+            format: ["Load", " ", 0, ", ", 1, ", ", 2],
+            operands:
+              {
+                0: { name: dst, type: VREG, flag: Def },
+                1: { name: addr, type: VREG, flag: Use },
+                2: { name: align, type: ALIGN, flag: Metadata },
+              },
+            flag: [Load],
+          },
+        Store: {
+            # format: "{mnem} {addr}, {src}, {align}"
+            format: ["Store", " ", 0, ", ", 1, ", ", 2],
+            operands:
+              {
+                0: { name: addr, type: VREG, flag: Use },
+                1: { name: src, type: VAL, flag: Use },
+                2: { name: align, type: ALIGN, flag: Metadata },
+              },
+            flag: [Store],
+          },
+        #floating point fused multiply-add
+        FFma:
+          {
+            format: ["FFma", " ", 0, ", ", 1, ", ", 2, ", ", 3],
+            operands:
+              {
+                0: { name: dst, type: FPREG, flag: Def },
+                1: { name: src1, type: FPREG, flag: Use },
+                2: { name: src2, type: FPREG, flag: Use },
+                3: { name: acc, type: FPREG, flag: Use },
+              },
+          },
+        # SDiv, SRem
+        SDiv:
+          {
+            format: ["SDiv", " ", 0, ", ", 1, ", ", 2],
+            operands:
+              {
+                0: { name: dst, type: INTREG, flag: Def },
+                1: { name: src1, type: INTVAL, flag: Use },
+                2: { name: src2, type: INTVAL, flag: Use },
+              },
+          },
+        SRem:
+          {
+            format: ["SRem", " ", 0, ", ", 1, ", ", 2],
+            operands:
+              {
+                0: { name: dst, type: INTREG, flag: Def },
+                1: { name: src1, type: INTVAL, flag: Use },
+                2: { name: src2, type: INTVAL, flag: Use },
+              },
+          },
+        # Cmp
+        ICmp: {
+            format: ["ICmp", " ", 0, ", ", 1, ", ", 2, ", ", 3],
+            operands:
+              {
+                0: { name: dst, type: INTREG, flag: Def },
+                1: { name: src1, type: INTVAL, flag: Use },
+                2: { name: src2, type: INTVAL, flag: Use },
+                3: { name: op, type: FLAG, flag: Metadata },
+              },
+            # flag: [Cmp],
+          },
+        FCmp:
+          {
+            format: ["FCmp", " ", 0, ", ", 1, ", ", 2, ", ", 3],
+            operands:
+              {
+                0: { name: dst, type: INTREG, flag: Def },
+                1: { name: src1, type: FPVAL, flag: Use },
+                2: { name: src2, type: FPVAL, flag: Use },
+                3: { name: op, type: FLAG, flag: Metadata },
+              },
+          },
+        # Conversion
+        # SExt, ZExt, Trunc, F2U, F2S, U2F, S2F, FCast
+        SExt:
+          {
+            format: ["SExt", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: INTREG, flag: Def },
+                1: { name: src, type: INTVAL, flag: Use },
+              },
+          },
+        ZExt:
+          {
+            format: ["ZExt", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: INTREG, flag: Def },
+                1: { name: src, type: INTVAL, flag: Use },
+              },
+          },
+        Trunc:
+          {
+            format: ["Trunc", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: INTREG, flag: Def },
+                1: { name: src, type: INTVAL, flag: Use },
+              },
+          },
+        F2U:
+          # float to unsigned int
+          {
+            format: ["F2U", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: INTREG, flag: Def },
+                1: { name: src, type: FPREG, flag: Use },
+              },
+          },
+        F2S:
+          # float to signed int
+          {
+            format: ["F2S", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: INTREG, flag: Def },
+                1: { name: src, type: FPREG, flag: Use },
+              },
+          },
+        U2F:
+          # unsigned int to float
+          {
+            format: ["U2F", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: FPREG, flag: Def },
+                1: { name: src, type: INTVAL, flag: Use },
+              },
+          },
+        S2F:
+          # signed int to float
+          {
+            format: ["S2F", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: FPREG, flag: Def },
+                1: { name: src, type: INTVAL, flag: Use },
+              },
+          },
+        FCast:
+          # float to float
+          {
+            format: ["FCast", " ", 0, ", ", 1],
+            operands: { 0: { name: dst, type: FPREG, flag: Def } },
+          },
+        Return: { format: ["Return"], operands: {} },
+        Copy: {
+            # format: "Copy {dst}, {src}"
+            format: ["Copy", " ", 0, ", ", 1],
+            operands: {
+                #! type
+                0: { name: dst, type: VRegOrISAReg, flag: Def },
+                1: { name: src, type: VRegOrISAReg, flag: Use },
+              },
+            flag: [RegCopy],
+          },
+        Select: {
+            # Select {dst}, {cond}, {src1}, {src2}
+            format: ["Select", " ", 0, ", ", 1, ", ", 2, ", ", 3],
+            operands:
+              {
+                0: { name: dst, type: VAL, flag: Def },
+                1: { name: cond, type: BOOL, flag: Use },
+                2: { name: src1, type: VAL, flag: Use },
+                3: { name: src2, type: VAL, flag: Use },
+              },
+          },
+        LoadGlobalAddress: {
+            # dst, reloc; Def, Metadata
+            # int_reg, reloc
+            # format: "LoadGlobalAddress {dst}, {reloc}"
+            # LoadGlobalAddress dst[INTREG], reloc[RELOC]
+            format: ["LoadGlobalAddress", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: INTREG, flag: Def },
+                1: { name: addr, type: RELOC, flag: Metadata },
+              },
+            flag: [LoadConstant],
+          },
+        LoadImm: {
+            # format: "LoadImm {dst}, {imm}"
+            format: ["LoadImm", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: INTREG, flag: Def },
+                1: { name: imm, type: IMM, flag: Metadata },
+              },
+          },
+        LoadStackObjectAddr: {
+            # format: "LoadStackObjAddr {dst}, {obj}"
+            # LoadStackObjAddr {dst:INTREG, Def}, {obj:StackObject, Metadata}
+            format: ["LoadStackObjectAddr", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: INTREG, flag: Def },
+                1: { name: obj, type: StackObject, flag: Metadata },
+              },
+            flag: [LoadConstant],
+          },
+        CopyFromReg:
+          {
+            format: ["CopyFromReg", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: VRegOrISAReg, flag: Def },
+                1: { name: src, type: ISAReg, flag: Use },
+              },
+            flag: [RegCopy],
+          },
+        CopyToReg:
+          {
+            format: ["CopyToReg", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: ISAReg, flag: Def },
+                1: { name: src, type: VRegOrISAReg, flag: Use },
+              },
+            flag: [RegCopy, RegDef],
+          },
+        LoadImmToReg:
+          {
+            format: ["LoadImmToReg", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: ISAReg, flag: Def },
+                1: { name: imm, type: IMM, flag: Metadata },
+              },
+            flag: { RegDef },
+          },
+        LoadRegFromStack:
+          {
+            format: ["LoadRegFromStack", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: dst, type: VRegOrISAReg, flag: Def },
+                1: { name: obj, type: StackObject, flag: Metadata },
+              },
+            flag: [Load],
+          },
+        StoreRegToStack:
+          {
+            format: ["StoreRegToStack", " ", 0, ", ", 1],
+            operands:
+              {
+                0: { name: obj, type: StackObject, flag: Metadata },
+                1: { name: src, type: VRegOrISAReg, flag: Use },
+              },
+            flag: [Store],
+          },
+      },
+  }

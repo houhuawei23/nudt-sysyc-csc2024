@@ -1,0 +1,150 @@
+// Automatically generated file, do not edit!
+
+#include "autogen/{{target_name.lower()}}/ISelInfoDecl.hpp"
+
+{{target_name}}_NAMESPACE_BEGIN
+
+{# matchXXX Inst format #}
+{# inst is inst name? #}
+{% for name in match_insts_list %}
+{% if name in match_insts_dict %}
+static bool match{{name}}(
+    MIRInst* inst
+    {%- for idx, info in match_insts_dict[name].operands.items() -%}
+    , MIROperand& {{info.name}}
+    {%- endfor -%}
+)
+{
+    if(inst->opcode() != {{name}})
+        return false;
+    {% for idx, info in match_insts_dict[name].operands.items() -%}
+        {{info.name}} = inst->operand({{idx}});
+    {%- endfor %}
+    return true;
+}
+{% endif %}
+{% endfor %}
+
+{# matchAndSelectPattern #}
+{% for inst, isel_item_list in isel_dict.items() -%}
+/* {{inst}} matchAndSelectPattern{{inst}} begin */
+{% for isel_item in isel_item_list -%}
+
+static bool matchAndSelectPattern{{isel_item.idx}} (
+    MIRInst* inst{{isel_item.match_id}},
+    ISelContext& ctx)
+{
+    uint32_t rootOpcode = {{isel_item.match_inst_name}};
+    /** Match Inst **/
+    {%- for match in isel_item.match_list %}
+        {% if match.type == 'match_inst' -%}
+            /* match inst {{match.inst_name}} */
+            {% for operand_idx in match.capture_list -%}
+                MIROperand op{{operand_idx}};
+            {%- endfor %}
+            if (not match{{match.inst_name}}(
+                inst{{match.pattern_id}}
+                {%- for operand_idx in match.capture_list -%}
+                   , op{{operand_idx}}
+                {%- endfor -%}
+            ))  { return false; }
+
+            {%- for lookup_idx, inst_idx in match.lookup_list.items() -%}
+                /* lookup inst that define the operand{{lookup_idx}} */
+                auto inst{{inst_idx}} = ctx.lookupDefInst(op{{lookup_idx}});
+                if (not inst{{inst_idx}}) { return false; }    
+            {%- endfor -%}
+        {% elif match.type == 'predicate' -%}
+            /* match predicate for operands  */
+            {% for op in match.new_ops -%}
+                MIROperand op{{op}};
+            {%- endfor -%}
+            if(not ({{match.code}})) {
+                return false;
+            }
+        {%- else %}
+            {# not supported #}
+        {%- endif %}
+    {% endfor%}
+
+    /** Select Inst **/
+    {% for select in isel_item.select_list -%}
+        {% if select.type == 'select_inst' -%}
+            /* select inst {{select.inst_name}} */
+            auto inst{{select.idx}} = ctx.insertMIRInst({{select.inst_name}}, {
+                {% for item in select.operands %}op{{ item }}{% if not loop.last %}, {% endif %}{% endfor %}
+            });
+            {% if select.used_as_operand %} 
+                auto op{{select.operand_idx}} = ctx.getInstDefOperand(inst{{select.idx}});
+            {% endif -%}
+        {% elif select.type == 'custom' -%}
+            auto op{{select.idx}} = ({{select.code}});
+        {%- else -%}
+            {# not supported #}
+        {%- endif %}
+    {% endfor %}
+    
+    {%- if isel_item.replace_operand %}
+        /* Replace Operand */
+        ctx.replace_operand(ctx.getInstDefOperand(inst{{isel_item.match_id}}), 
+                            ctx.getInstDefOperand(inst{{isel_item.replace_id}}));
+    {% else %}
+    {% endif -%}
+    ctx.remove_inst(inst{{isel_item.match_id}});
+    return true;
+} 
+{% endfor %}
+/* {{inst}} matchAndSelectPattern{{inst}}end */
+
+{% endfor %}
+
+
+
+static bool matchAndSelectImpl(MIRInst* inst, ISelContext& ctx, bool debugMatchSelect) {
+    bool success = false;
+    switch (inst->opcode()) {
+        {% for inst_name, isel_item_list in isel_dict.items() -%}
+        case {{inst_name}}:{
+            {% for isel_item in isel_item_list -%}
+            if(matchAndSelectPattern{{isel_item.idx}}(inst, ctx)) {
+                success = true;
+                break;
+            }
+            {%- endfor %}
+            break;
+        }
+        {%- endfor %}
+        default:
+            break;
+    }
+    if (debugMatchSelect) {
+        auto& instInfo = ctx.codegen_ctx().instInfo.getInstInfo(inst);
+        std::cerr << instInfo.name();
+        if (success) std::cerr << " success." << std::endl;
+        else std::cerr << " failed." << std::endl;
+    }
+    return success;
+}
+
+class {{target_name}}ISelInfo final : public TargetISelInfo {
+public:
+    bool isLegalInst(uint32_t opcode) const override;
+    bool match_select(MIRInst* inst, ISelContext& ctx) const override;
+    void legalizeInstWithStackOperand(const InstLegalizeContext& ctx,
+                                    MIROperand op,
+                                    StackObject& obj) const override;
+    void postLegalizeInst(const InstLegalizeContext& ctx) const override;
+    bool lowerInst(ir::Instruction* inst, LoweringContext& loweringCtx) const override;
+    MIROperand materializeFPConstant(float fpVal, LoweringContext& loweringCtx) const override;
+};
+
+
+
+TargetISelInfo& get{{target_name}}ISelInfo() {
+    static {{target_name}}ISelInfo iselInfo;
+    return iselInfo;
+}
+
+
+
+{{target_name}}_NAMESPACE_END

@@ -1,0 +1,21 @@
+// Automatically generated file, do not edit!
+
+#pragma once
+#include "mir/MIR.hpp"
+
+#define {{target_name}}_NAMESPACE_BEGIN namespace mir::{{target_name}} {
+#define {{target_name}}_NAMESPACE_END }
+
+{{target_name}}_NAMESPACE_BEGIN
+enum {{target_name}}Inst {
+    {{target_name}}InstBegin = ISASpecificBegin,
+    {% for inst_name in inst_name_list %}
+            {{inst_name}}, {%- if inst_name not in inst_info_dict %} /* not implemented yet */ {% endif -%}
+    {% endfor %}
+
+    {{target_name}}InstEnd
+};
+
+TargetInstInfo& get{{target_name}}InstInfo();
+
+{{target_name}}_NAMESPACE_END

@@ -1,0 +1,42 @@
+
+// Automatically generated file, do not edit!
+#include "autogen/{{target_name.lower()}}/ScheduleModelDecl.hpp"
+#include <iostream>
+
+
+{{target_name}}_NAMESPACE_BEGIN
+
+{% for name, model in models.items() %}
+class {{target_name}}ScheduleModel_{{name}} final: public TargetScheduleModel {
+    {% for class in model.classes %}
+    {{target_name}}ScheduleClass{{class}} mScheduleClass_{{class}};
+    {% endfor %}
+
+public:
+    ScheduleClass& getInstScheClass(uint32_t opcode) override {
+        switch (opcode) {
+            {% for className, opcodes in model.classes.items() %}
+            {% for opcode in opcodes %}
+            case {{opcode}}:
+                {%- endfor %}
+                return mScheduleClass_{{className}};
+            {% endfor %}
+            default:
+                std::cerr << "getInstScheClass() failed: op: " << opcode << std::endl;
+                assert(false && "Invalid opcode");  
+        }
+    }
+    MicroArchInfo& getMicroArchInfo() override;
+    bool peepholeOpt(MIRFunction& func, CodeGenContext& context) override;
+    bool isExpensiveInst(MIRInst* inst, CodeGenContext& context) override;
+};
+{% endfor %}
+
+TargetScheduleModel& get{{target_name}}ScheduleModel() {
+    {% for name, model in models.items() %}
+    static {{target_name}}ScheduleModel_{{name}} model_{{name}};
+    return model_{{name}};
+    {% endfor %}
+}
+
+{{target_name}}_NAMESPACE_END

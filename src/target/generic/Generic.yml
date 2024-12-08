@@ -1,0 +1,103 @@
+enum GenericInst {
+    GenericInstBegin = ISASpecificBegin,
+    Jump,    // Jump label, OperandFlagMetadata
+    Branch,  // Branch cond, true_label, false_label; Use, Metadata, Metadata
+
+    Unreachable,  // Unreachable
+
+    /* format: dst, src, align */
+    /* Vreg, Val, Align */
+    Load,   // Load dst, src, align; Def, Use, Metadata
+    Store,  // Store dst, src, align; Use, Use, Metadata
+
+    /* Binary Inst (Int) */
+    /* format: menem dst, src1, src2 */
+    Add,   // Add dst, src1, src2; Def, Use, Use
+    Sub,   // Sub dst, src1, src2; Def, Use, Use
+    Mul,   // Mul dst, src1, src2; Def, Use, Use
+    UDiv,  // UDiv dst, src1, src2; Def, Use, Use
+    URem,  // URem dst, src1, src2; Def, Use, Use
+    And,
+    Or,
+    Xor,
+    Shl,
+    LShr,
+    AShr,  // AShr dst, src1, src2; Def, Use, Use
+
+    // Signed Div/Rem
+    SDiv,  // SDiv dst, src1, src2, ?, ?, ?; Def, Use, Use, Metadata, Metadata,
+           // Metadata
+    SRem,  // same
+
+    // dst, src1, src2
+    SMin,
+    SMax,
+    /* Unary Inst 1*/
+    // dst, src
+    Neg,
+    Abs,
+
+    /* Binary Inst (Float) */
+    // dst, src1, src2
+    FAdd,
+    FSub,
+    FMul,
+    FDiv,
+    FNeg,  // dst, src
+    FAbs,  // dst, src
+    FFma,  // dst, srcc1, src2, src3; Def, Use. Use, Use
+    // dst, src1, src2, imm
+    ICmp,
+    FCmp,
+
+    /* Unary Inst 2 */
+    // dst, src
+    SExt,
+    ZExt,
+    Trunc,
+    F2U,
+    F2S,
+    U2F,
+    S2F,
+    FCast,
+
+    /* Others */
+    // dst, src; isOperandVRegORISAReg
+    Copy,
+    // dst, cond, true_val, false_val; Def, Use, Use, Use
+    // vreg, bool, val, val
+    Select,
+    // dst, global_var_name; Def, Metadata
+    // int_reg, reloc
+    LoadGlobalAddress,
+
+    // dst, imm; Def, Metadata
+    // int_reg, imm
+    LoadImm,
+    
+    // dst, stack; Def, Metadata
+    // int_reg, stackobj
+    LoadStackObjectAddr,
+    
+    // dst, src; Def, Use
+    // vreg||isareg, isareg; verify inst
+    CopyFromReg,
+
+    // dst, src; Use, Def
+    // isareg, vreg||isareg; verify inst
+    CopyToReg,
+
+    // dst, imm; Def, Metadata
+    // isa_reg, imm
+    LoadImmToReg,
+
+    // dst, stack; Def, Metadata
+    // vreg||isareg, stackobj
+    LoadRegFromStack,
+    
+    // src, stack; Use, Metadata
+    // vreg||isareg, stackobj
+    StoreRegToStack,
+    
+    GenericInstEnd
+};
