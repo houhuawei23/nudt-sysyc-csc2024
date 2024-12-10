@@ -1,3 +1,8 @@
+# Abstract Data Type (ADT)
+
+- 中间表示可以有三种形态：用以高效分析和变换的内存表示 (in-memory form)，用以存储和交换的字节码 (bytecode form)，以及用以阅读和纠错的文本表示 (textural form)。
+
+
 一切皆 Value, 表示一个“值”
 ```CPP
 /*
