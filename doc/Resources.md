@@ -71,7 +71,6 @@
 
 ## IR Design
 
-
 - [Compilers and IRs: LLVM IR, SPIR-V, and MLIR. 2022.01.08](https://www.lei.chat/posts/compilers-and-irs-llvm-ir-spirv-and-mlir/)
 - [编译器与中间表示: LLVM IR, SPIR-V, 以及 MLIR](https://www.lei.chat/zh/posts/compilers-and-irs-llvm-ir-spirv-and-mlir/)
 
@@ -80,3 +79,4 @@
 - [Compiler Explorer (godbolt.org)](https://godbolt.org/)
 - [tooldiy](https://tooldiy.ry.rs/)
 - [Immersive Translate](https://immersivetranslate.com/)
+- [TLDR: Collaborative cheatsheets for console commands](https://github.com/tldr-pages/tldr)
