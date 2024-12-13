@@ -49,8 +49,8 @@ Reconstructioned from [SysYCompiler](https://gitee.com/triple-adventurer/sys-yco
 
 ## 运行
 
-- 推荐使用 Debian-12 bookworm 或 Ubuntu 20.04
-
+- 推荐使用 Debian-12 bookworm 或 Ubuntu 22.04
+- 可使用wsl2，推荐使用裸机 linux 或双系统
 
 ### 安装依赖
 
@@ -58,7 +58,6 @@ Reconstructioned from [SysYCompiler](https://gitee.com/triple-adventurer/sys-yco
 
 - [ANTLR4 Releases](https://github.com/antlr/antlr4/releases)
 - [ANTLR4 Downloads](https://github.com/antlr/website-antlr4/tree/gh-pages/download)
-
 
 这里使用了 ANTLR4 4.12.0 版本，与比赛测试环境中版本一致。
 
