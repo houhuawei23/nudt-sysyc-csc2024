@@ -1,4 +1,4 @@
-## SysYCompiler 编译器设计文档
+## SysYCompiler 编译器设计文档 & 实验报告
 
 实习简介与要求:
 
@@ -6,7 +6,7 @@
 
 ### 简介
 
-![workflow](workflow.png)
+<p align="center"> <img src="../pics/workflow.png" width = 60%/>
 
 1. 前端：
    1. 采用 ANTLR4 C++ Lib 进行词法、语法分析，生成抽象语法树（AST）
@@ -14,7 +14,7 @@
    1. 利用 ANTLR Visitor 语法树遍历模式，发射自定义 SSA IR
    2. 自定义 IR 可 序列化 （Serialization）为与 LLVM IR 兼容的可读格式，并利用 LLVM 相关组件进行测试分析
    3. 在 IR 上进行机器无关优化，包括标量优化、循环优化、过程间优化等
-3. 后端：MIR 框架，可兼容 自定义 GenericInst 与 TargetInst 
+3. 后端：MIR 框架，可兼容 自定义 GenericInst 与 TargetInst
    1. 降级（Lower）：由 IR 到 MIR GenericInst
    2. 指令选择（InstSelect）：由 GenericInst 到 TargetInst
    3. 在 MIR 上进行优化：窥孔优化，指令调度，块调度，块化简等
@@ -22,7 +22,6 @@
    5. MIR 序列化为 汇编代码（AsmCode），在 qemu 与 开发板上测试
 
 ### 前端
-
 
 ### 中端
 
