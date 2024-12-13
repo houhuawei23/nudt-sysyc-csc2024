@@ -16,3 +16,8 @@
   - /usr/share/java/antlr4-runtime-4.7.2.jar
   - /usr/share/java/antlr4-runtime.jar
   - /usr/share/maven-repo/org/antlr/xx
+
+
+Fragments are reusable parts of lexer rules which cannot match on their own - they need to be referenced from a lexer rule.
+
+片段是词法分析器规则的可重用部分，它们无法单独匹配 - 它们需要从词法分析器规则中引用。
