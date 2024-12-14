@@ -50,7 +50,7 @@ Reconstructioned from [SysYCompiler](https://gitee.com/triple-adventurer/sys-yco
 ## 运行
 
 - 推荐使用 Debian-12 bookworm 或 Ubuntu 22.04
-- 可使用wsl2，推荐使用裸机 linux 或双系统
+- 可使用 wsl2，推荐使用裸机 linux 或双系统
 
 ### 安装依赖
 
@@ -61,9 +61,9 @@ Reconstructioned from [SysYCompiler](https://gitee.com/triple-adventurer/sys-yco
 
 这里使用了 ANTLR4 4.12.0 版本，与比赛测试环境中版本一致。
 
-* 下载 antlr4 jar package [antlr-4.12.0-complete.jar](https://github.com/antlr/website-antlr4/blob/gh-pages/download/antlr-4.12.0-complete.jar)
-* 下载 ANTLR4 C++运行时库源代码 [antlr4-cpp-runtime-4.12.0-source.zip](https://github.com/antlr/website-antlr4/blob/gh-pages/download/antlr4-cpp-runtime-4.12.0-source.zip)
-* 加压到 `third-party/antlr4/` 目录下
+- 下载 antlr4 jar package [antlr-4.12.0-complete.jar](https://github.com/antlr/website-antlr4/blob/gh-pages/download/antlr-4.12.0-complete.jar)
+- 下载 ANTLR4 C++运行时库源代码 [antlr4-cpp-runtime-4.12.0-source.zip](https://github.com/antlr/website-antlr4/blob/gh-pages/download/antlr4-cpp-runtime-4.12.0-source.zip)
+- 加压到 `third-party/antlr4/` 目录下
 
 在 `third-party/antlr4/antlr4-cpp-runtime-4.12.0-source/` 目录下，执行：
 
@@ -77,30 +77,42 @@ cmake --install build # install to /usr/local/
 
 #### 安装其他依赖
 
+##### must
+
 ```bash
 sudo apt-get update
 sudo apt-get install -y build-essential uuid-dev libutfcpp-dev pkg-config make git cmake openjdk-11-jre
+```
 
+##### optional
+
+```bash
 # llvm clang
-llvm-15-dev 
+llvm-15-dev
 
 # ninja
 ninja-build
+
+# google test
+libgtest-dev
 
 # cross-compiler
 sudo apt install gcc-riscv64-linux-gnu # or gcc-riscv64-unknown-elf,gcc-11-riscv64-linux-gnu, gcc-arm-linux-gnueabihf
 
 # g++
-g++-12-riscv64-linux-gnu 
-g++-12-arm-linux-gnueabihf 
+g++-12-riscv64-linux-gnu
+g++-12-arm-linux-gnueabihf
 
 ## tldr: Simplified and community-driven man pages
 sudo apt-get install -y tldr && tldr -u
+
 ```
 
 #### Build the project
 
 ```bash
+# cd to project root directory
+
 # default use Unix Makefiles
 mkdir build
 cmake -s . -B build
