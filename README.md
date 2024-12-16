@@ -40,7 +40,7 @@ Reconstructioned from [SysYCompiler](https://gitee.com/triple-adventurer/sys-yco
 
 - `src`：源码目录
 - `include`：头文件目录
-- `third-party`：第三方库目录（需要手动下载）
+- `third_party`：第三方库目录（需要手动下载）
   - `antlr4`：
     - `antlr4-cpp-runtime-4.12.0-source`：ANTLR4 C++运行时库源代码
     - `antlr-4.12.0-complete.jar`：ANTLR4 Java jar 包
@@ -63,9 +63,9 @@ Reconstructioned from [SysYCompiler](https://gitee.com/triple-adventurer/sys-yco
 
 - 下载 antlr4 jar package [antlr-4.12.0-complete.jar](https://github.com/antlr/website-antlr4/blob/gh-pages/download/antlr-4.12.0-complete.jar)
 - 下载 ANTLR4 C++运行时库源代码 [antlr4-cpp-runtime-4.12.0-source.zip](https://github.com/antlr/website-antlr4/blob/gh-pages/download/antlr4-cpp-runtime-4.12.0-source.zip)
-- 加压到 `third-party/antlr4/` 目录下
+- 加压到 `third_party/antlr4/` 目录下
 
-在 `third-party/antlr4/antlr4-cpp-runtime-4.12.0-source/` 目录下，执行：
+在 `third_party/antlr4/antlr4-cpp-runtime-4.12.0-source/` 目录下，执行：
 
 ```bash
 # pwd: path_to/third-party/antlr4/antlr4-cpp-runtime-4.12.0-source/
@@ -115,7 +115,7 @@ sudo apt-get install -y tldr && tldr -u
 
 # default use Unix Makefiles
 mkdir build
-cmake -s . -B build
+cmake -S . -B build
 cmake --build build -j$(nproc)
 
 # use Ninja
