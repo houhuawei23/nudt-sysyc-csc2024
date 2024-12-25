@@ -212,6 +212,11 @@
 
 #### RISCV 赛道参赛作品开源地址
 
+- kirara: Rust, handwrite frontend
+- 编译青春: Rust, antlr-rust
+- CompilerHIT: Rust, lalrpop
+- YetJustSysyc: Rust, handwrite frontend
+
 | 队伍 ID         | 学校                   | 队伍名称         | fork 仓库地址                                                                     |
 | --------------- | ---------------------- | ---------------- | --------------------------------------------------------------------------------- |
 | 202314325201374 | 南方科技大学           | CMMC             | [link](https://gitlab.eduxiji.net/educg-group-17291-1894922/202314325201374-1031) |
@@ -289,9 +294,11 @@
 2. 八云蓝架构编译器与 RE 的橙南开大学 华志远张昌昊孔德嵘 C++
    1. [github](https://github.com/yuhuifishash/SysY)
 3. 人工式生成智能 南开大学 梅骏逸 郭大玮仇科文冯思程 Rust
-   1. 前端：Lalrpop
-   2. 单元测试 & 集成测试
-   3. Syntax Highlighting Support for OrzIR
+   1. [nku-compiler-2024-rs](https://github.com/JuniMay/nku-compiler-2024-rs/tree/main)
+   2. [nku-rust-doc](https://junimay.github.io/nku-compiler-2024-rs/index.html)
+   3. 前端：Lalrpop
+   4. 单元测试 & 集成测试
+   5. Syntax Highlighting Support for OrzIR
 4. return_0; 清华大学 游旺 张一可薛志宇仇成宇 C++
    1. 前端：ANTLR4
    2. cicd
@@ -304,10 +311,11 @@
    2. Csmith 测试，拓展了前端、支持了额外的语法
    3. IR 设计思考
 8. 素履“译”往队 北京航空航天大学 张博睿张哲单江涵董天傲 Java
-9. 编编又译译 电子科技大学 姚欣扬许芳煜龚骁阳 C++
+9.  编编又译译 电子科技大学 姚欣扬许芳煜龚骁阳 C++
    1. Lex+Yacc
 10. 世界第一可爱 Fuyuki 清华大学 陈英豪 魏辰轩于新雨李骋昊 Rust
-    1. 前端：使用 [pest](https://github.com/pest-parser/pest) 将高级代码转换为 AST；使用访问者模式将 AST 树转换为 llvm 风格的中端代码，同时建立 SSA 的性质
+    1. 前端：使用 [pest](https://github.com/pest-parser/pest) 将高级代码转换为 AST；
+       使用访问者模式将 AST 树转换为 llvm 风格的中端代码，同时建立 SSA 的性质
     2. 中端：DCE, GVN, Mem2Reg, Inline, TCO, Loop Simplify, IndVar Lift, Loop Unroll
     3. 后端：除常数优化，ShiftAdd，La2auipc，branch Combine，指令调度，图染色寄存器分配
 11. 四个圣甲虫 中山大学 陈俊儒梁爽韩云昊王骏越 C++

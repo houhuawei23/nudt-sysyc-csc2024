@@ -39,6 +39,8 @@
 - [doc](https://github.com/antlr/antlr4/blob/master/doc/index.md)
 - [Runtime Libraries and Code Generation Targets](https://github.com/antlr/antlr4/blob/master/doc/targets.md)
 - [Getting started with Antlr4Cpp with CMake](https://github.com/antlr/antlr4/tree/dev/runtime/Cpp/cmake)
+- [Grammars written in ANTLR4](https://github.com/antlr/grammars-v4)
+  - [C.g4](https://github.com/antlr/grammars-v4/blob/master/c/C.g4)
 - [The Definitive ANTLR 4 Reference](https://pragprog.com/titles/tpantlr2/the-definitive-antlr-4-reference/)
 - [The Definitive ANTLR 4 Reference.pdf](./antlr4/The%20Definitive%20ANTLR%204%20Reference.pdf)
 - [ANTLR 4 权威指南.pdf](./antlr4/ANTLR%204权威指南.pdf)
@@ -76,11 +78,14 @@
 
 - [Compilers and IRs: LLVM IR, SPIR-V, and MLIR. 2022.01.08](https://www.lei.chat/posts/compilers-and-irs-llvm-ir-spirv-and-mlir/)
 - [编译器与中间表示: LLVM IR, SPIR-V, 以及 MLIR](https://www.lei.chat/zh/posts/compilers-and-irs-llvm-ir-spirv-and-mlir/)
+- [llvm: clang-ir](https://llvm.github.io/clangir/)
 
 ## Rust Compiler
 
 - [lalrpop: LR(1) parser generator for Rust](https://github.com/lalrpop/lalrpop)
-- [pest](https://github.com/pest-parser/pest)
+- [pest: The Elegant Parser](https://github.com/pest-parser/pest)
+- [wrecc: A x86_64 C99 compiler written in Rust from scratch](https://github.com/PhilippRados/wrecc)
+- [github: nom, Rust parser combinator framework](https://github.com/rust-bakery/nom)
 
 ## Useful Tools
 
@@ -88,9 +93,20 @@
 - [tooldiy](https://tooldiy.ry.rs/)
 - [Immersive Translate](https://immersivetranslate.com/)
 - [TLDR: Collaborative cheatsheets for console commands](https://github.com/tldr-pages/tldr)
+- [A (toy) C compiler written in Rust with no dependencies.](https://github.com/ClementTsang/rustcc)
 
 ## Uncategorized
 
+- [pku-minic koopa: Library for generating/parsing/optimizing Koopa IR in Rust](https://github.com/pku-minic/koopa)
 - [awesome-sysy](https://github.com/pku-minic/awesome-sysy)
 - [SallyCompiler](https://github.com/sally-compiler/SallyCompiler)
 - [SysY](https://github.com/yuhuifishash/SysY)
+- [blog: Writing a C Compiler](https://norasandler.com/2017/11/29/Write-a-Compiler.html)\
+- [book: Writing a C Compiler](https://nostarch.com/writing-c-compiler)
+- [github: nqcc, C compiler written in OCaml](https://github.com/nlsandler/nqcc)
+- [github: Test Suite for Writing a C Compiler](https://github.com/nlsandler/write_a_c_compiler)
+- [blog: Why am I writing a Rust compiler in C?](https://notgull.net/announcing-dozer/)
+- [bootstrappable](https://bootstrappable.org/)
+- [crates.io: antlr-rust](https://crates.io/crates/antlr-rust/0.3.0-beta)
+- [github: antlr-rust](https://github.com/rrevenantt/antlr4rust)
+- [A New Backend for Cranelift, Part 1: Instruction Selection](https://cfallin.org/blog/2020/09/18/cranelift-isel-1/)
