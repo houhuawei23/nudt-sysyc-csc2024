@@ -4,7 +4,26 @@ Reconstructioned from [SysYCompiler](https://gitee.com/triple-adventurer/sys-yco
 
 ## 基本情况
 
-开发者: 侯华玮 简泽鑫 汤翔晟 杨俯众
+Contributors 开发者:
+
+- [侯华玮](https://github.com/houhuawei23), [汤翔晟](https://github.com/TernaryExplorer), [杨俯众](https://gitee.com/westme10n), [简泽鑫](https://github.com/xinchen-jzx)
+
+<a href="https://github.com/houhuawei23/nudt-sysy-compiler-csc2024-origin/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=houhuawei23/nudt-sysy-compiler-csc2024-origin" />
+</a>
+
+Made with [contributors-img](https://github.com/lacolaco/contributors-img)
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+---
 
 - 主要开发周期：2024.02 - 2024.08
 - 总代码行数 5W+：
@@ -22,19 +41,27 @@ Reconstructioned from [SysYCompiler](https://gitee.com/triple-adventurer/sys-yco
 
 决赛性能得分（vs Best Performance）：
 
-<p align="center"> <img src="./doc/pics/final_score.png" width = 100%/>
+<p align="center"> <img src="./doc/pics/final_score.png" width = 90%/>
 
 比赛结束后修复“依赖关系分析”等 bug 后，加上循环并行化优化后性能（vs GCC-O3）：
 
-<p align="center"> <img src="./doc/pics/performance.png" width = 100%/>
+<p align="center"> <img src="./doc/pics/performance.png" width = 90%/>
 
 在”通用矩阵乘“三重循环上的”循环并行化“优化后效果（vs GCC-O3）：
 
-<p align="center"> <img src="./doc/pics/parallel.png" width = 100%/>
+<p align="center"> <img src="./doc/pics/parallel.png" width = 90%/>
 
 - 编译器设计框架：
 
-<p align="center"> <img src="./doc/pics/workflow.png" width = 100%/>
+<p align="center"> <img src="./doc/pics/workflow.png" width = 90%/>
+
+[Commits Histogram](https://github.com/houhuawei23/nudt-sysy-compiler-csc2024-origin/graphs/commit-activity):
+
+<p align="center"> <img src="./doc/pics/commits-histogram.png" width = 90%/>
+
+[Contributors](https://github.com/houhuawei23/nudt-sysy-compiler-csc2024-origin/graphs/contributors):
+
+<p align="center"> <img src="./doc/pics/contributors.png" width = 90%/>
 
 ## 项目结构
 
