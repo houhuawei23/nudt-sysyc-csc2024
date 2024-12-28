@@ -1,5 +1,11 @@
 # NUDT SysY Compiler for CSC-2024
 
+<p align="center"> 
+<img class="cropimg" src="NUDT-SysY-Compiler.png" alt="NUDT-SysY-Compiler" style="width: 60%;" />
+</p>
+
+<!-- "https://raw.githubusercontent.com/houhuawei23/nudt-sysyc-csc2024/main/NUDT-SysY-Compiler.png" -->
+
 Reconstructioned from [SysYCompiler](https://gitee.com/triple-adventurer/sys-ycompiler).
 
 ## 基本情况
@@ -13,15 +19,6 @@ Contributors 开发者:
 </a>
 
 Made with [contributors-img](https://github.com/lacolaco/contributors-img)
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ---
 
