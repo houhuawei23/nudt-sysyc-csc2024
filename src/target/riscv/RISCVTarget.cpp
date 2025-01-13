@@ -141,8 +141,8 @@ bool RISCVTarget::verify(MIRFunction& func) {
       //           << std::endl;
       if (not(opcode >= RISCV::RISCVInst::RISCVInstBegin and
               opcode <= RISCV::RISCVInst::RISCVInstEnd)) {
-        std::cerr << "unknown riscv instruction: "
-                  << utils::enumName(static_cast<MIRGenericInst>(opcode)) << std::endl;
+        std::cerr << "unknown riscv instruction: ";
+                  // << utils::enumName(static_cast<MIRGenericInst>(opcode)) << std::endl;
         // assert(false);
         return false;
       }

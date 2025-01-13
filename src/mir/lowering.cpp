@@ -491,8 +491,8 @@ void createMIRInst(ir::Instruction* ir_inst, LoweringContext& ctx) {
     //   lower(dyn_cast<ir::AtomicrmwInst>(ir_inst), ctx);
     // break;
     default:
-      const auto valueIdEnumName = utils::enumName(static_cast<ir::ValueId>(ir_inst->valueId()));
-      std::cerr << valueIdEnumName << ": not supported inst" << std::endl;
+      // const auto valueIdEnumName = utils::enumName(static_cast<ir::ValueId>(ir_inst->valueId()));
+      // std::cerr << valueIdEnumName << ": not supported inst" << std::endl;
       assert(false && "not supported inst");
   }
 }
