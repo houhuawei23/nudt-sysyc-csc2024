@@ -184,7 +184,7 @@ python ./submit/runtest.py compiler_path tests_path output_asm_path output_exe_p
 
 ### 重要时间节点梳理
 
-- [timeline.mw](./timeline.mw)
+- [timeline.mw](./timeline.mw) or [online](https://meridiem.markwhen.com/houhuawei23/timeline)
 
 <br>
 
@@ -228,3 +228,31 @@ python ./submit/runtest.py compiler_path tests_path output_asm_path output_exe_p
 
 ### 经验 教训 收获 
 
+- 工程量大，实现赛越来越卷，需要尽早准备和开展工作
+- 速度 vs 质量
+  - 速度: 
+    - 要尽快构建起“最小可运行程序”，能够测试最简单的样例，也就是要先跑起来再说，先打通流程再逐步细化
+  - 质量:
+    - 程序框架: 程序架构/编程范式/设计模式
+    - 程序细节: 代码质量（严谨性/通用性/可移植性）
+    - 否则随着代码量增加，整个程序将变成石山，非常痛苦
+  - 两手抓、两手都要硬: 
+    - 在追求速度的同时要注重程序质量，在保证程序质量的同时也要注意尽快跑起来
+    - 一般来说，要先实现一个能测试最简单样例的程序，然后在逐步细化时要及时代码重构
+    - 速度决定你能很快上路，质量决定你能走多远
+  - 如何提高代码质量
+    - 时刻葆有对高质量代码的追求
+    - 编程语言选择: “更安全”的语言?
+    - 阅读优秀代码, 学习设计思路和实现方式
+    - 阅读 Effective XXX
+    - 在 coding 中体会
+- 及时整理归档资料，Q&A
+  - “吃一堑，长一智”
+- 寒假
+  - 没有必要学习编译原理
+  - 了解编译的基本流程和编译器的基本结构后可以开始着手看代码，写代码
+  - 推荐一些高校的编译课程实验文档/指导书
+    - [BUAA miniSysY-tutorial](https://github.com/No-SF-Work/miniSysY-tutorial)
+    - [nku-rust-doc](https://junimay.github.io/nku-compiler-2024-rs/index.html)
+    - [北大编译实践在线文档](https://pku-minic.github.io/online-doc/#/)
+    - [THU minidecaf](https://decaf-lang.github.io/minidecaf-tutorial/)
