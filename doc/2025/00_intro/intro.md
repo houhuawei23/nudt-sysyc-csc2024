@@ -153,7 +153,34 @@ Value 最重要的属性是维护了使用和定义关系，即 Value a 使用�
 
 IR 中的程序控制流是由 基本块 + 跳转指令（branch/jump） 构成的，基本块是 IR 的最小执行单位，它包含了指令序列，指令序列中的指令按顺序执行，直到遇到跳转指令（branch/jump）时，控制流转移到其他基本块。
 
+```cpp
+// IR Data Structures
+class Use;
+class User;
+class Value;
+
+class ConstantValue;
+class Instruction;
+class BasicBlock;
+class Argument;
+
+class Function;
+class Module;
+```
+
+以 Value 为父基类的 ir 数据结构层次：
+
+<p align="center"> <img src="../image/intro/ir_value_hierarchy.png" width="60%" />
+
+类型系统：
+
+<p align="center"> <img src="../image/intro/ir_type_system.png" width="40%" />
+
+LLVM IR：
+
 <p align="center"> <img src="../image/intro/LLVM-IR.png" width="60%" />
+
+使用-定义链：
 
 <p align="center"> <img src="../image/intro/Use-list.svg" width="60%" />
 
@@ -211,3 +238,4 @@ Work to do:
 - 读并调试 nudt-sysy-2024 代码，理解流程、架构
 - 调研 2020-2024 参赛队代码，总结技术点：编程语言、所用工具、设计思想
 - 配好环境，舒服的开发、编程、调试环境
+
