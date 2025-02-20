@@ -1,5 +1,7 @@
 # ast->ir 实验指导
 
+- [nudt old 框架](https://gitee.com/ccrg/sysy)，有实验 1-3，实验 2 为 `ast->ir`
+
 ### Simplest Case
 
 c -> llvm ir
@@ -27,6 +29,14 @@ define i32 @main() {
 - 用以高效分析和变换的内存表示 (in-memory form)，
 - 用以存储和交换的字节码 (bytecode form)，
 - 以及用以阅读和纠错的文本表示 (textural form)。
+
+以 Value 为父基类的 ir 数据结构层次：
+
+<p align="center"> <img src="../image/intro/ir_value_hierarchy.png" width="60%" />
+
+类型系统：
+
+<p align="center"> <img src="../image/intro/ir_type_system.png" width="40%" />
 
 更多介绍参考 [00_intro#IR-设计](../00_intro/intro.md#ir-设计)
 
@@ -64,7 +74,6 @@ define i32 @main() {
 - 一般会编写测试脚本（bash/python）来进行自动化批量测试
 - 要注意回归测试，即通过新的样例时，同时要检查之前通过的样例是否仍然正确
 - 如果能够实现持续集成（CI），即推送代码后自动编译测试、汇报测试结果，则更好不过了
-
 
 ## 助学材料（很有用的哦，建议看看）
 
