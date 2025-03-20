@@ -23,7 +23,6 @@ Reconstructioned from [SysYCompiler](https://gitee.com/triple-adventurer/sys-yco
   - [收获 经验 教训](#收获-经验-教训)
   - [时间安排与建议](#时间安排与建议)
 
-
 ## 基本情况
 
 Contributors 开发者:
@@ -52,7 +51,7 @@ Made with [contributors-img](https://github.com/lacolaco/contributors-img)
 
 - 优化效果概览：
 
-决赛性能得分（vs Best Performance）：
+决赛性能得分（vs Best Performance），详细情况分析见[final_result_analysis](./doc/report/final_result_analysis.md)：
 
 <p align="center"> <img src="./doc/pics/final_score.png" width = 90%/>
 
