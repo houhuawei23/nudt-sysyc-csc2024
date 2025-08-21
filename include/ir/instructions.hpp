@@ -27,26 +27,57 @@ class CallInst;
 class PhiInst;
 
 class IndVar;
-/*
- * @brief: AllocaInst
+/**
+ * @brief Stack allocation instruction
+ * 
+ * AllocaInst represents a stack allocation instruction that allocates memory
+ * on the stack for a local variable. The allocated memory has automatic
+ * storage duration and is automatically freed when the function returns.
+ * 
+ * Key features:
+ * - Allocates space for a single object or array
+ * - Returns a pointer to the allocated space
+ * - Supports constant allocation annotation
+ * - Memory is automatically managed (stack-based)
+ * 
+ * Example IR:
+ * @code
+ * %ptr = alloca i32        ; Allocate space for one i32
+ * %arr = alloca [10 x i32] ; Allocate space for 10 i32s
+ * @endcode
  */
 class AllocaInst : public Instruction {
 protected:
-  bool mIsConst = false;
+  bool mIsConst = false;    ///< Whether this allocation is for a constant
 
-public:  // 构造函数
-  //! 1. Alloca Scalar
+public:
+  /**
+   * @brief Constructs a new AllocaInst
+   * @param base_type The type of object to allocate space for
+   * @param is_const Whether the allocation is for a constant
+   * @param parent The parent basic block
+   * @param name Optional name for the instruction
+   */
   AllocaInst(Type* base_type,
              bool is_const = false,
              BasicBlock* parent = nullptr,
              const_str_ref name = "")
     : Instruction(vALLOCA, Type::TypePointer(base_type), parent, name), mIsConst(is_const) {}
 
-public:  // get function
+public:
+  /**
+   * @brief Gets the type of the allocated object
+   * @return Pointer to the base type (the type being allocated)
+   */
   Type* baseType() const {
     assert(mType->dynCast<PointerType>() && "type error");
     return mType->as<PointerType>()->baseType();
   }
+  
+  /**
+   * @brief Gets the number of array dimensions (0 for scalars)
+   * @return Number of dimensions, or 0 for non-array types
+   */
   auto dimsCnt() const {
     if (baseType()->isArray())
       return dyn_cast<ArrayType>(baseType())->dims_cnt();
@@ -54,14 +85,24 @@ public:  // get function
       return static_cast<size_t>(0);
   }
 
-public:  // check function
+public:
+  /// @brief Checks if this allocates a scalar (non-array) type
   bool isScalar() const { return !baseType()->isArray(); }
+  
+  /// @brief Checks if this allocation is marked as constant
   bool isConst() const { return mIsConst; }
 
 public:
+  /// @brief Runtime type checking for AllocaInst
   static bool classof(const Value* v) { return v->valueId() == vALLOCA; }
+  
+  /// @brief Prints this instruction to output stream
   void print(std::ostream& os) const override;
+  
+  /// @brief Dumps this instruction as an operand
   void dumpAsOpernd(std::ostream& os) const override { os << mName; }
+  
+  /// @brief Creates a copy of this instruction
   Instruction* copy(std::function<Value*(Value*)> getValue) const override;
 };
 
